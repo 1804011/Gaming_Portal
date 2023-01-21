@@ -10,6 +10,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.1.4",
+    "axios": "^1.2.3",
     "daisyui": "^2.46.1",
     "firebase": "^9.15.0",
     "react": "^18.2.0",
@@ -19,6 +20,7 @@
     "react-router-dom": "^6.6.2",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.7",
+    "react-toastify": "^9.1.1",
     "validator": "^13.7.0",
     "web-vitals": "^2.1.4"
   },

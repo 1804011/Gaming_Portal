@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import auth from '../firebase.init';
 import Spinner from './Spinner';
 const Login = () => {
+
     const navigate = useNavigate("")
     const [
         signInWithEmailAndPassword,
@@ -14,7 +15,7 @@ const Login = () => {
     ] = useSignInWithEmailAndPassword(auth);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const validator = require('validator');
-    console.log(errors);
+
 
     if (user) {
         navigate("/")
@@ -94,9 +95,9 @@ const Login = () => {
                                 <div class="flex items-center justify-between">
 
                                     <div class="text-sm">
-                                        <a href="#" className="text-green-400 hover:text-green-500">
+                                        <Link to="/forgot-password" className="text-green-400 hover:text-green-500">
                                             Forgot your password?
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div >

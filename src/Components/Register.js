@@ -1,12 +1,16 @@
 import { useForm } from 'react-hook-form';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../firebase.init';
 import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth'
 import { async } from '@firebase/util';
 import Spinner from './Spinner';
+import axios from 'axios';
+import { ExceptionMap } from 'antd/es/result';
 const Register = () => {
     const navigate = useNavigate("");
+    const [duplicate, setDuplicate] = useState(0)
+
     const [
         createUserWithEmailAndPassword,
         user,
@@ -21,9 +25,7 @@ const Register = () => {
     if (user) {
         navigate("/login")
     }
-    if (error) {
 
-    }
     return (
         <div style={{
             width: "450px",
@@ -44,16 +46,40 @@ const Register = () => {
                             <p class="text-gray-500">Please register your new account</p>
                         </div>
                         <form onSubmit={handleSubmit(async ({ name, email, password }) => {
-                            await createUserWithEmailAndPassword(email, password);
+                            let flag = 0;
+                            await axios.get("http://localhost:5000/user/" + name)
+                                .then(({ data }) => {
+
+                                    if (data?.name === name) {
+                                        flag = 1;
+                                    }
+                                })
+                            if (flag) {
+                                setDuplicate(1)
+                                return;
+                            }
+
+
+                            const result = await createUserWithEmailAndPassword(email, password);
                             await updateProfile({ displayName: name })
+
+                            if (result) {
+                                axios.post("https://gaming-portal-server.vercel.app/user", { name, email }).then(({ data }) => {
+                                    if (data?.status === "success") {
+                                        alert("user added")
+                                    }
+                                })
+                            }
+
                         })}>
                             <div class="space-y-4">
                                 <div class="space-y-1">
                                     <label class="text-sm font-medium text-gray-700 tracking-wide">Your Name</label>
-                                    <input {...register("name", {
+                                    <input  {...register("name", {
                                         required: true,
                                         validate: (val) => {
-                                            return val.trim().length >= 6 && val.trim().length <= 15
+                                            setDuplicate(0);
+                                            return (val.trim().length >= 6 && val.trim().length <= 15)
                                         }
 
 
@@ -68,9 +94,14 @@ const Register = () => {
                                             "*Name is required"
                                         }
                                         {
-                                            errors?.name?.type === "validate" &&
-                                            "*Name is between 6 and 15 character"
+                                            (errors?.name?.type === "validate" &&
+                                                "*Name is between 6 and 15 character")
+
                                         }
+                                        {
+                                            (duplicate === 1) && "*Name is already taken"
+                                        }
+
 
 
                                     </p>

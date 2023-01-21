@@ -1,4 +1,5 @@
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -13,6 +14,8 @@ import { theme } from 'antd';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import GameSelection from './Components/GameSelection';
+import ForgotPassword from './Components/ForgotPassword';
+import { ToastContainer } from 'react-toastify';
 function App() {
   const {
     token: { colorBgContainer },
@@ -20,7 +23,22 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Navbar />,
+      element:
+        <>
+          <Navbar />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={1000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
+        </>,
       children: [
         {
           path: "/",
@@ -112,6 +130,20 @@ function App() {
         }, {
           path: "/chess/computer",
           element: ""
+        }, {
+          path: "/forgot-password",
+          element: <Content
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              height: "570px",
+              background: colorBgContainer,
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <ForgotPassword />
+          </Content>
         }
 
       ]
