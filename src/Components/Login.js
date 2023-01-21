@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import auth from '../firebase.init';
 import Spinner from './Spinner';
 const Login = () => {
-
+    const [signedIn: user, userLoading, userError] = useAuthState(auth);
     const navigate = useNavigate("")
     const [
         signInWithEmailAndPassword,
@@ -17,7 +17,8 @@ const Login = () => {
     const validator = require('validator');
 
 
-    if (user) {
+    if (user || signedIn) {
+
         navigate("/")
     }
 

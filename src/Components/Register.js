@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../firebase.init';
-import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth'
+import { useAuthState, useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth'
 import { async } from '@firebase/util';
 import Spinner from './Spinner';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import { ExceptionMap } from 'antd/es/result';
 const Register = () => {
     const navigate = useNavigate("");
     const [duplicate, setDuplicate] = useState(0)
+    const [signedIn: user, userLoading, userError] = useAuthState(auth);
 
     const [
         createUserWithEmailAndPassword,
@@ -22,9 +23,11 @@ const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     console.log(errors);
 
-    if (user) {
-        navigate("/login")
+
+    if (signedIn) {
+        navigate("/")
     }
+    console.log(duplicate);
 
     return (
         <div style={{
@@ -47,7 +50,7 @@ const Register = () => {
                         </div>
                         <form onSubmit={handleSubmit(async ({ name, email, password }) => {
                             let flag = 0;
-                            await axios.get("http://localhost:5000/user/" + name)
+                            await axios.get("https://gaming-portal-server.vercel.app/user/" + name)
                                 .then(({ data }) => {
 
                                     if (data?.name === name) {
@@ -56,7 +59,7 @@ const Register = () => {
                                 })
                             if (flag) {
                                 setDuplicate(1)
-                                return;
+                                return 0;
                             }
 
 
@@ -66,7 +69,7 @@ const Register = () => {
                             if (result) {
                                 axios.post("https://gaming-portal-server.vercel.app/user", { name, email }).then(({ data }) => {
                                     if (data?.status === "success") {
-                                        alert("user added")
+                                        navigate("/login")
                                     }
                                 })
                             }

@@ -46,7 +46,7 @@ const ForgotPassword = () => {
                                 });
                                 if (result) {
 
-                                    toast.info("Email sent")
+                                    toast.info("Reset password email is sent to your email")
                                 }
                             }
                             else {
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
                                 </div>
                                 <div >
                                     <button type="submit" class="w-full flex items-center justify-center bg-green-400  hover:bg-green-500 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">
-                                        Sent mail
+                                        Send email
                                         <span className='ml-2'>
                                             {sending && <Spinner color={"white"} />}
                                         </span>
