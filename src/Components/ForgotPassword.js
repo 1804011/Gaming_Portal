@@ -42,7 +42,7 @@ const ForgotPassword = () => {
                             const email = emailRef.current.value;
                             if (validator.isEmail(email)) {
                                 const result = await sendPasswordResetEmail(email, {
-                                    url: "http://localhost:3000/login"
+                                    url: "https://gaming-portal-26c38.web.app/login"
                                 });
                                 if (result) {
 
