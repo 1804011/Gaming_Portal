@@ -1,5 +1,7 @@
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { faUserFriends, faDesktop, faD } from '@fortawesome/free-solid-svg-icons';
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -16,7 +18,13 @@ import Register from './Components/Register';
 import GameSelection from './Components/GameSelection';
 import ForgotPassword from './Components/ForgotPassword';
 import { ToastContainer } from 'react-toastify';
+import ChessOption from './Components/ChessOption';
+import CreateGame from './Components/CreateGame';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from './firebase.init';
 function App() {
+  const [user, loading, error] = useAuthState(auth);
+  console.log(user);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -110,23 +118,48 @@ function App() {
             <Content
               style={{
                 margin: '24px 16px',
-                padding: 24,
                 height: "570px",
                 background: colorBgContainer,
                 display: "flex",
-                justifyContent: "center"
+                justifyContent: "center",
+                boxShadow: "15px 15px 15px rgba(0,0,0,0.05)"
               }}
             >
-              <div style={{ width: "450px" }}>
-                <Link to="./friend">Play with friend</Link>
-                <Link to="./computer">Play with computer</Link>
-                <Outlet />
 
-              </div>
-            </Content>
+              <ChessOption icon1={faUserFriends}
+                text2="Play with computer"
+                icon2={faDesktop} text1="Play a friend"
+                route1={"./friend"}
+                route2={"./computer"}
+              />
+              <Outlet />
+
+
+            </Content>,
+
         }, {
           path: "/chess/friend",
-          element: "Playing with friend"
+          element:
+            <Content
+              style={{
+                margin: '24px 16px',
+                height: "570px",
+                background: colorBgContainer,
+                display: "flex",
+                justifyContent: "center",
+                boxShadow: "15px 15px 15px rgba(0,0,0,0.05)"
+              }}
+            >
+
+              <ChessOption
+                text2="Join a game"
+                route1={"./create"}
+                route2={"./join-game"}
+                text1="Create a game" />
+              <Outlet />
+
+
+            </Content>,
         }, {
           path: "/chess/computer",
           element: ""
@@ -144,6 +177,20 @@ function App() {
           >
             <ForgotPassword />
           </Content>
+        }, {
+          path: "/chess/friend/create",
+          element: <Content
+            style={{
+              margin: '24px 16px',
+              height: "570px",
+              background: colorBgContainer,
+              display: "flex",
+              justifyContent: "center",
+              boxShadow: "15px 15px 15px rgba(0,0,0,0.05)"
+            }}
+          >
+            <CreateGame gameType={"Chess"} name={user?.displayName} />
+          </Content>,
         }
 
       ]

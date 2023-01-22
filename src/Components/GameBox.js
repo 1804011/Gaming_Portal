@@ -19,7 +19,8 @@ const GameBox = ({ text, game }) => {
             <div style={style} className="text-2xl">
                 <span className='text-[48px]'>  {`\u2658`}  </span>
                 {text}
-            </div></Link >
+            </div>
+        </Link >
     );
 };
 

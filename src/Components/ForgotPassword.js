@@ -50,7 +50,7 @@ const ForgotPassword = () => {
                                 }
                             }
                             else {
-                                alert('invalid')
+
                                 setEmailError(1)
                             }
                         }}>

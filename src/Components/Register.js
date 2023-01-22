@@ -1,12 +1,10 @@
 import { useForm } from 'react-hook-form';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../firebase.init';
 import { useAuthState, useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth'
-import { async } from '@firebase/util';
 import Spinner from './Spinner';
 import axios from 'axios';
-import { ExceptionMap } from 'antd/es/result';
 const Register = () => {
     const navigate = useNavigate("");
     const [duplicate, setDuplicate] = useState(0)
