@@ -22,12 +22,15 @@ import ChessOption from './Components/ChessOption';
 import CreateGame from './Components/CreateGame';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from './firebase.init';
+import RequireAuth from './Components/RequireAuth';
+import JoinGame from './Components/JoinGame';
+import PlayChess from './Components/PlayChess';
+import PlayComputer from './Components/PlayComputer';
+import PlayChessWithFriend from './Components/PlayChessWithFriend';
 function App() {
   const [user, loading, error] = useAuthState(auth);
   console.log(user);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const colorBgContainer = "#262421";
   const router = createBrowserRouter([
     {
       path: "/",
@@ -151,32 +154,32 @@ function App() {
               }}
             >
 
-              <ChessOption
-                text2="Join a game"
-                route1={"./create"}
-                route2={"./join-game"}
-                text1="Create a game" />
+              <RequireAuth>
+                <ChessOption
+                  text2="Join a game"
+                  route1={"./create"}
+                  route2={"./join-game"}
+                  text1="Create a game" />
+              </RequireAuth>
               <Outlet />
 
 
             </Content>,
         }, {
-          path: "/chess/computer",
-          element: ""
-        }, {
           path: "/forgot-password",
-          element: <Content
-            style={{
-              margin: '24px 16px',
-              padding: 24,
-              height: "570px",
-              background: colorBgContainer,
-              display: "flex",
-              justifyContent: "center"
-            }}
-          >
-            <ForgotPassword />
-          </Content>
+          element:
+            <Content
+              style={{
+                margin: '24px 16px',
+                padding: 24,
+                height: "570px",
+                background: colorBgContainer,
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <ForgotPassword />
+            </Content>
         }, {
           path: "/chess/friend/create",
           element: <Content
@@ -189,7 +192,81 @@ function App() {
               boxShadow: "15px 15px 15px rgba(0,0,0,0.05)"
             }}
           >
-            <CreateGame gameType={"Chess"} name={user?.displayName} />
+            <RequireAuth>
+              <CreateGame gameType={"Chess"} name={user?.displayName} email={user?.email} />
+            </RequireAuth>
+          </Content>,
+        }, {
+          path: "/chess/friend/join-game",
+          element: <Content
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              height: "570px",
+              background: colorBgContainer,
+              display: "flex",
+              justifyContent: "center",
+
+            }}
+          >
+            <RequireAuth>
+              <JoinGame />
+            </RequireAuth>
+          </Content>
+        }, {
+          path: "*",
+          element:
+            <Content
+              style={{
+                margin: '24px 16px',
+                padding: 24,
+                height: "570px",
+                background: colorBgContainer,
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "column"
+              }}
+            >
+              <h1 className='text-6xl text-center font-[900]'>404</h1>
+
+              <p className="text-7xl text-center">Not found</p>
+            </Content>
+        },
+        {
+          path: "/chess/computer",
+          element:
+            <Content
+              style={{
+                margin: '24px 16px',
+                padding: 24,
+                height: "570px",
+                background: colorBgContainer,
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "column"
+              }}
+            >
+              <PlayComputer />
+            </Content>,
+        }, {
+          path: "/Chess/friend/playing/:_id",
+          element: <Content
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              height: "570px",
+              background: colorBgContainer,
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+
+            }}
+          >
+            <RequireAuth>
+              <PlayChessWithFriend />
+            </RequireAuth>
           </Content>,
         }
 
