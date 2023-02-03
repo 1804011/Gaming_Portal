@@ -382,6 +382,27 @@ function App() {
             </RequireAuth>
           </Content>,
         },
+        {
+          path: "/space-invader",
+          element:
+            <Content
+              style={{
+                margin: '24px 16px',
+                height: "570px",
+                background: colorBgContainer,
+                display: "flex",
+                justifyContent: "center",
+                boxShadow: "15px 15px 15px rgba(0,0,0,0.05)"
+              }}
+            >
+
+
+              <iframe src="https://kawsar-pie.github.io/space-invasion/" width={"100%"} height="100%"></iframe>
+
+
+            </Content>,
+
+        },
 
 
 
