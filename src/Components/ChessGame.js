@@ -9,7 +9,6 @@ import capture from '../Media/capture.mp3'
 const ChessGame = ({ firstTurn }) => {
     const [game, setGame] = useState(new Chess());
     const [display, setDisplay] = useState(false)
-    const [draggable, setDraggable] = useState(true)
     const [promoted, setPromoted] = useState(undefined)
     const [displayPromotion, setDisplayPromotion] = useState(false)
     const [dotted, setDotted] = useState([])

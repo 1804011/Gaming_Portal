@@ -26,33 +26,83 @@ const PlayChessWithFriend = () => {
     const [start, setStart] = useState(false);
     const [game, setGame] = useState(new Chess());
     const [display, setDisplay] = useState(false)
-    const [draggable, setDraggable] = useState(true)
     const [promoted, setPromoted] = useState(undefined)
     const [displayPromotion, setDisplayPromotion] = useState(false)
     const [dotted, setDotted] = useState([])
     const [sparsable, setSparsable] = useState([])
-
+    const [result, setResult] = useState("")
+    const [checked, setChecked] = useState(false)
+    useEffect(() => {
+        socket?.on('join', (data) => {
+            if (data?.joined)
+                setStart(true);
+        })
+        socket?.on('move', ({ boardState }) => setGame(new Chess(boardState)))
+    }, [socket])
     useEffect(() => {
         // alert(game.isCheckmate())
         if (game.isCheckmate()) {
-            alert("end")
-            alert(game.turn() === 'b' ? "white won" : "black won")
+            // alert("end")
+            // alert(game.turn() === 'b' ? "white won" : "black won")
+            if (firstPlayer === user?.displayName) {
+                game.turn() === "b" ? setResult({
+                    message: "Congratulations!!",
+                    info: "You won the game"
+                }) : setResult({
+                    message: "Sorry!!",
+                    info: "You lost the game"
+                })
+            }
+            else if (secondPlayer === user?.displayName) {
+                game.turn() === "w" ? setResult({
+                    message: "Congratulations!!",
+                    info: "You won the game"
+                }) : setResult({
+                    message: "Sorry!!",
+                    info: "You lost the game"
+                })
+            }
+            setChecked(true);
+
         }
-        else if (game.isGameOver())
-            alert("Draw")
+        else if (game.isGameOver()) {
+            setResult({
+                message: "Draw!!"
+            })
+            setChecked(true);
+        }
     }, [game])
+    useEffect(() => {
+        const result = axios.get("https://gaming-portal-server-production.up.railway.app/match/" + _id)
+            .then(({ data }) => {
+                const { firstPlayer, secondPlayer, status, boardState } = data
+                setFirstPlayer(firstPlayer)
+                setSecondPlayer(secondPlayer)
+
+                setTimeout(() => {
+                    setGame(new Chess(boardState))
+                    if (status === "running") {
+                        setStart(true);
+                    }
+                }, [1000])
+
+
+
+
+            })
+
+
+    }, [])
     useEffect(() => {
         axios.get("https://gaming-portal-server-production.up.railway.app/match/" + _id)
             .then(({ data }) => {
                 const { firstPlayer, secondPlayer, status, boardState } = data
                 setFirstPlayer(firstPlayer)
                 setSecondPlayer(secondPlayer)
-                if (status === "running") {
-                    setStart(true);
-                }
 
             })
     }, [start])
+
     useEffect(() => {
         setSocket(io("https://gaming-portal-server-production.up.railway.app/Chess", {
             extraHeaders: {
@@ -63,14 +113,8 @@ const PlayChessWithFriend = () => {
 
     }, [user])
     // alert(start)
-    useEffect(() => {
-        socket?.on('join', (data) => {
-            alert(JSON.stringify(data))
-            if (data?.joined)
-                setStart(true);
-        })
-        socket?.on('move', ({ boardState }) => setGame(new Chess(boardState)))
-    }, [socket])
+
+
 
     const onDrop = (source, target) => {
         setDisplay(false);
@@ -147,10 +191,12 @@ const PlayChessWithFriend = () => {
     }
     return (
         <div style={style}>
+
             <ChessPlayer player={user?.displayName === firstPlayer ? secondPlayer : firstPlayer} />
             <div className='relative'>
+                {/* <div className='text-[white]'>{game.fen()}</div> */}
                 <Chessboard
-                    position={game.fen()}
+                    position={game?.fen()}
                     boardWidth={450}
                     onPieceDrop={onDrop}
                     onPieceDragBegin={onDragBegin}
@@ -181,6 +227,20 @@ const PlayChessWithFriend = () => {
 
             </div>
             <ChessPlayer player={user?.displayName} />
+            <div>
+                {/* The button to open modal */}
+                {/* <label htmlFor="my-modal-3" className="btn">open modal</label> */}
+
+                {/* Put this part before </body> tag */}
+                <input type="checkbox" id="my-modal-3" className="modal-toggle" checked={checked} />
+                <div className="modal">
+                    <div className="modal-box relative">
+                        <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => setChecked(false)}>✕</label>
+                        <h3 className="text-lg font-[900] text-center">{result?.message}</h3>
+                        <p className="py-4 font-[700] text-3xl text-center">{result?.info}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

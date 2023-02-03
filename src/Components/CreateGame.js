@@ -52,7 +52,7 @@ const CreateGame = ({ gameType, name, email }) => {
                                     const { status, result: { _id } } = data;
 
 
-                                    status === "success" && navigate("../Chess/friend/playing/" + _id)
+                                    status === "success" && navigate(`../${gameType}/friend/playing/` + _id)
                                 }).catch(({ message }) => {
                                     setError("*" + message);
                                     setLoading(false)
@@ -85,7 +85,7 @@ const CreateGame = ({ gameType, name, email }) => {
                                     <label class="text-sm font-medium text-[white] tracking-wide">
                                         {
                                             gameType == "Chess" ?
-                                                "Choose your Chracter" : "Who moved first"
+                                                "Choose your Chracter" : "Who moves first"
                                         }
                                     </label>
                                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -99,23 +99,10 @@ const CreateGame = ({ gameType, name, email }) => {
                                     </div>
 
                                 </div>
-                                <div className="w-full max-w-xs">
-                                    <label class="text-sm font-medium text-[white] tracking-wide">
-                                        Game duration
-                                    </label>
-                                    <br />
-                                    <select ref={optionRef} className=" mb-2 select mt-[4px] select-bordered">
-                                        <option>10 minute</option>
-                                        <option>15 minute</option>
-                                        <option>30 minute</option>
 
 
-                                    </select>
 
-                                </div>
-
-
-                                <div>
+                                <div className='mt-5'>
                                     <button type="submit" class="w-full flex items-center justify-center bg-green-400  hover:bg-green-500 text-gray-100 p-3 mt-1 rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">
                                         Create
                                         <span className='ml-2'>

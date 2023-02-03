@@ -18,7 +18,7 @@ import Register from './Components/Register';
 import GameSelection from './Components/GameSelection';
 import ForgotPassword from './Components/ForgotPassword';
 import { ToastContainer } from 'react-toastify';
-import ChessOption from './Components/ChessOption';
+import GameOption from './Components/GameOption';
 import CreateGame from './Components/CreateGame';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from './firebase.init';
@@ -27,6 +27,7 @@ import JoinGame from './Components/JoinGame';
 import PlayChess from './Components/PlayChess';
 import PlayComputer from './Components/PlayComputer';
 import PlayChessWithFriend from './Components/PlayChessWithFriend';
+import PlayGomokuWithFriend from './Components/PlayGomokuWithFriend';
 function App() {
   const [user, loading, error] = useAuthState(auth);
   console.log(user);
@@ -129,7 +130,7 @@ function App() {
               }}
             >
 
-              <ChessOption icon1={faUserFriends}
+              <GameOption icon1={faUserFriends}
                 text2="Play with computer"
                 icon2={faDesktop} text1="Play a friend"
                 route1={"./friend"}
@@ -140,7 +141,8 @@ function App() {
 
             </Content>,
 
-        }, {
+        },
+        {
           path: "/chess/friend",
           element:
             <Content
@@ -155,7 +157,7 @@ function App() {
             >
 
               <RequireAuth>
-                <ChessOption
+                <GameOption
                   text2="Join a game"
                   route1={"./create"}
                   route2={"./join-game"}
@@ -165,7 +167,8 @@ function App() {
 
 
             </Content>,
-        }, {
+        },
+        {
           path: "/forgot-password",
           element:
             <Content
@@ -180,7 +183,8 @@ function App() {
             >
               <ForgotPassword />
             </Content>
-        }, {
+        },
+        {
           path: "/chess/friend/create",
           element: <Content
             style={{
@@ -196,7 +200,8 @@ function App() {
               <CreateGame gameType={"Chess"} name={user?.displayName} email={user?.email} />
             </RequireAuth>
           </Content>,
-        }, {
+        },
+        {
           path: "/chess/friend/join-game",
           element: <Content
             style={{
@@ -213,7 +218,8 @@ function App() {
               <JoinGame />
             </RequireAuth>
           </Content>
-        }, {
+        },
+        {
           path: "*",
           element:
             <Content
@@ -250,7 +256,8 @@ function App() {
             >
               <PlayComputer />
             </Content>,
-        }, {
+        },
+        {
           path: "/Chess/friend/playing/:_id",
           element: <Content
             style={{
@@ -268,7 +275,116 @@ function App() {
               <PlayChessWithFriend />
             </RequireAuth>
           </Content>,
-        }
+        },
+        {
+          path: "/gomoku",
+          element:
+            <Content
+              style={{
+                margin: '24px 16px',
+                height: "570px",
+                background: colorBgContainer,
+                display: "flex",
+                justifyContent: "center",
+                boxShadow: "15px 15px 15px rgba(0,0,0,0.05)"
+              }}
+            >
+
+              <GameOption icon1={faUserFriends}
+                text2="Play with computer"
+                icon2={faDesktop} text1="Play a friend"
+                route1={"./friend"}
+                route2={"./computer"}
+              />
+              <Outlet />
+
+
+            </Content>,
+
+        },
+        {
+          path: "/gomoku/friend",
+          element:
+            <Content
+              style={{
+                margin: '24px 16px',
+                height: "570px",
+                background: colorBgContainer,
+                display: "flex",
+                justifyContent: "center",
+                boxShadow: "15px 15px 15px rgba(0,0,0,0.05)"
+              }}
+            >
+
+              <RequireAuth>
+                <GameOption
+                  text2="Join a game"
+                  route1={"./create"}
+                  route2={"./join-game"}
+                  text1="Create a game" />
+              </RequireAuth>
+              <Outlet />
+
+
+            </Content>,
+        },
+        {
+          path: "/gomoku/friend/create",
+          element: <Content
+            style={{
+              margin: '24px 16px',
+              height: "570px",
+              background: colorBgContainer,
+              display: "flex",
+              justifyContent: "center",
+              boxShadow: "15px 15px 15px rgba(0,0,0,0.05)"
+            }}
+          >
+            <RequireAuth>
+              <CreateGame gameType={"Gomoku"} name={user?.displayName} email={user?.email} />
+            </RequireAuth>
+          </Content>,
+        },
+        {
+          path: "/gomoku/friend/join-game",
+          element: <Content
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              height: "570px",
+              background: colorBgContainer,
+              display: "flex",
+              justifyContent: "center",
+
+            }}
+          >
+            <RequireAuth>
+              <JoinGame gameType={"Gomoku"} />
+            </RequireAuth>
+          </Content>
+        },
+        {
+          path: "/Gomoku/friend/playing/:_id",
+          element: <Content
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              height: "570px",
+              background: colorBgContainer,
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+
+            }}
+          >
+            <RequireAuth>
+              <PlayGomokuWithFriend />
+            </RequireAuth>
+          </Content>,
+        },
+
+
+
 
       ]
     },

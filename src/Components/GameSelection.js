@@ -6,14 +6,21 @@ const GameSelection = () => {
     return (
 
         <div>
-            <h2 className='text-4xl font-[900] text-center mt-4'>Play Games</h2>
+            <h2 className='text-4xl font-[900] text-center text-[white] mt-4'>Play Games</h2>
             <div style={{
                 display: "flex",
                 marginTop: "36px",
                 justifyContent: "center"
             }}>
-                <GameBox text={"Play Chess"} game="chess" />
-                <GameBox text={"Play Gomoku"} game="gomoku" />
+                <GameBox text={"Chess"} game="chess" />
+                <GameBox text={"Gomoku"} game="gomoku" />
+            </div>
+            <div style={{
+                display: "flex",
+                justifyContent: "center"
+            }}>
+                <GameBox text={"Space Invader"} game="Space-Invader" />
+
             </div>
         </div>
 

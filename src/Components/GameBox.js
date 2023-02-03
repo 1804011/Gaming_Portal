@@ -17,7 +17,7 @@ const GameBox = ({ text, game }) => {
     return (
         <Link to={`/${game}`}>
             <div style={style} className="text-2xl">
-                <span className='text-[48px]'>  {`\u2658`}  </span>
+                {/* <span className='text-[48px]'>  {`\u2658`}  </span> */}
                 {text}
             </div>
         </Link >

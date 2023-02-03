@@ -32,7 +32,7 @@ const Matches = ({ gameType }) => {
                 ></Match>)
             }
             {
-                matches?.length == 0 && <p className='text-center text-[white] text-3xl my-8'>There no match ongoing</p>
+                matches?.length == 0 && <p className='text-center text-[white] text-3xl my-8'>There is no match ongoing</p>
             }
         </div>
     );

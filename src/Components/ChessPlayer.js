@@ -1,6 +1,6 @@
 import React from 'react';
 import userImage from "../Media/userImage.svg"
-const ChessPlayer = ({ player }) => {
+const ChessPlayer = ({ player, img }) => {
     const style = {
         display: "flex",
         width: "450px",
@@ -11,7 +11,7 @@ const ChessPlayer = ({ player }) => {
     return (
         <div style={style}>
             <div className='flex '>
-                <img src={userImage} width={48} height={48} />
+                <img src={img || userImage} width={48} height={48} />
                 <div className='text-[white] ml-2 font-[600]'>
                     {player || "Waiting for player..."}
                 </div>
